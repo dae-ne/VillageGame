@@ -15,8 +15,6 @@ namespace VillageGame.App
         private const string _WindowName = "VillageGame";
         private const int _TileSize = 8;
 
-        private Sprite sprite;
-
         public RenderWindow Window { get; private set; }
 
         public Game(uint resolutionH, uint resolutionV)
