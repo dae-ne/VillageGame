@@ -4,16 +4,16 @@ namespace VillageGame.App.Tiles
 {
     class Tile : ITile
     {
-        private Sprite _sprite = new Sprite();
+        public Sprite TileSprite { get; }
 
         public Tile(Texture texture)
         {
-            _sprite.Texture = texture;
+            TileSprite.Texture = texture;
         }
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            throw new System.NotImplementedException();
+            target.Draw(TileSprite);
         }
     }
 }

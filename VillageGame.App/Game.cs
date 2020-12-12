@@ -3,6 +3,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using VillageGame.App.GameStates;
+using VillageGame.App.Tiles;
 
 namespace VillageGame.App
 {
@@ -10,7 +11,9 @@ namespace VillageGame.App
     {
         private List<IState> _states = new List<IState>();
         private readonly TextureManager _textureManager = new TextureManager();
+        private Dictionary<string, ITile> _tiles = new Dictionary<string, ITile>();
         private const string _WindowName = "VillageGame";
+        private const int _TileSize = 8;
 
         private Sprite sprite;
 
@@ -19,6 +22,7 @@ namespace VillageGame.App
         public Game(uint resolutionH, uint resolutionV)
         {
             LoadTextures();
+            LoadTiles();
             Window = new RenderWindow(new VideoMode(resolutionH, resolutionV), _WindowName);
             Window.SetFramerateLimit(60);
         }
@@ -41,6 +45,11 @@ namespace VillageGame.App
             {
                 Console.WriteLine("Cannot load textures");
             }
+        }
+
+        private void LoadTiles()
+        {
+            _tiles.Add("grass", new Tile(_textureManager.GetTexture("grass")));
         }
     }
 }
