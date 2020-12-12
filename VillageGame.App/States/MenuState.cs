@@ -1,16 +1,21 @@
-﻿namespace VillageGame.App.GameStates
+﻿using SFML.Graphics;
+
+namespace VillageGame.App.States
 {
-    class GameState : IState
+    class MenuState : IState
     {
         public Game App { get; }
 
-        public GameState(Game game)
+        public View MenuView { get; }
+
+        public MenuState(Game game)
         {
             App = game;
         }
 
         public void Draw()
         {
+            App.Window.SetView(MenuView);
             App.Window.Clear();
         }
 

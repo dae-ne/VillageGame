@@ -2,7 +2,7 @@
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using VillageGame.App.GameStates;
+using VillageGame.App.States;
 using VillageGame.App.Tiles;
 
 namespace VillageGame.App

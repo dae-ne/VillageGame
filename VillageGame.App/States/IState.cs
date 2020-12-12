@@ -1,4 +1,4 @@
-﻿namespace VillageGame.App.GameStates
+﻿namespace VillageGame.App.States
 {
     interface IState
     {
