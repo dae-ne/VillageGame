@@ -13,4 +13,13 @@
     <Folder Include="Saves\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\Grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Saves\empty.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

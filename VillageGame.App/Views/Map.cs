@@ -38,7 +38,6 @@ namespace VillageGame.App.Views
             {
                 var fileText = await File.ReadAllTextAsync(path);
                 var numbersAsStringArr = fileText.Split(' ').ToList();
-
                 _width = Int32.Parse(numbersAsStringArr[0]);
                 _height = Int32.Parse(numbersAsStringArr[1]);
                 numbersAsStringArr.RemoveRange(0, 2);

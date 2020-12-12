@@ -27,7 +27,7 @@ namespace VillageGame.App.States
 
             try
             {
-                _ = _map.LoadFromFileAsync("Saves/empty.dat", tiles);
+                _ = _map.LoadFromFileAsync("Saves/empty.txt", tiles);
             }
             catch
             {
