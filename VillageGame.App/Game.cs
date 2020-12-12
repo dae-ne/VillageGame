@@ -9,7 +9,6 @@ namespace VillageGame.App
     class Game
     {
         private List<IState> _states = new List<IState>();
-        //private RenderWindow window;
         private readonly TextureManager _textureManager = new TextureManager();
         private const string _WindowName = "VillageGame";
 
