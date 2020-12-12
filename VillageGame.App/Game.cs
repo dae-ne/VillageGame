@@ -7,9 +7,9 @@ namespace VillageGame.App
 {
     class Game
     {
-        private List<IState> states;
+        private List<IState> _states;
         //private RenderWindow window;
-        private const string WindowName = "VillageGame";
+        private const string _WindowName = "VillageGame";
 
         public RenderWindow Window { get; private set; }
 
