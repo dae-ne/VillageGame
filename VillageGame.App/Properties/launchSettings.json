@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VillageGame.App": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

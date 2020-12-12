@@ -5,7 +5,7 @@ namespace VillageGame.App
 {
     class TextureManager
     {
-        private Dictionary<string, Texture> _textures;
+        private Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
 
         public void LoadTexture(string name, string path)
         {
@@ -20,6 +20,16 @@ namespace VillageGame.App
         }
 
 
-        public Texture GetTexture(string name) => _textures[name];
+        public Texture GetTexture(string name)
+        {
+            try
+            {
+                return _textures[name];
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

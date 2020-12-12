@@ -5,7 +5,7 @@
         static void Main()
         {
             var game = new Game(800u, 600u);
-            game.GameLoop();
+            game.Run();
         }
     }
 }

@@ -9,9 +9,9 @@ namespace VillageGame.App
 {
     class Game
     {
-        private List<IState> _states = new List<IState>();
         private readonly TextureManager _textureManager = new TextureManager();
         private Dictionary<string, ITile> _tiles = new Dictionary<string, ITile>();
+        private IState _state;
         private const string _WindowName = "VillageGame";
         private const int _TileSize = 8;
 
@@ -22,22 +22,39 @@ namespace VillageGame.App
             LoadTextures();
             LoadTiles();
             Window = new RenderWindow(new VideoMode(resolutionH, resolutionV), _WindowName);
-            Window.SetFramerateLimit(60);
         }
 
-        public void GameLoop()
+        public void Run()
         {
+            Window.SetFramerateLimit(60);
+            Window.SetActive();
+            Window.Closed += (sender, e) => ((Window)sender).Close();
+            SetStateAsGame();
+
             while (Window.IsOpen)
             {
+                Window.DispatchEvents();
 
+                //_state.Update();
+                _state.Draw();
             }
+        }
+
+        public void SetStateAsGame()
+        {
+            _state = new GameState(this, _tiles);
+        }
+
+        public void SetStateAsMenu()
+        {
+            _state = new MenuState(this);
         }
 
         private void LoadTextures()
         {
             try
             {
-                _textureManager.LoadTexture("grass", "Images/Grass.png");
+                _textureManager.LoadTexture("grass", "Grass.png");
             }
             catch
             {

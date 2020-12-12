@@ -8,6 +8,7 @@ namespace VillageGame.App.Tiles
 
         public Tile(Texture texture)
         {
+            TileSprite = new Sprite();
             TileSprite.Texture = texture;
         }
 
