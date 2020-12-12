@@ -2,11 +2,16 @@
 {
     class GameState : IState
     {
-        public Game App => throw new System.NotImplementedException();
+        public Game App { get; }
+
+        public GameState(Game game)
+        {
+            App = game;
+        }
 
         public void Draw()
         {
-            throw new System.NotImplementedException();
+            App.Window.Clear();
         }
 
         public void HandleInput()

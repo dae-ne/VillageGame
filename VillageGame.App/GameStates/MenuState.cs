@@ -1,12 +1,23 @@
-﻿namespace VillageGame.App.GameStates
+﻿using SFML.Graphics;
+
+namespace VillageGame.App.GameStates
 {
     class MenuState : IState
     {
-        public Game App => throw new System.NotImplementedException();
+        public Game App { get; }
+
+        public View MenuView { get; }
+
+        public MenuState(Game game)
+        {
+            App = game;
+        }
 
         public void Draw()
         {
-            throw new System.NotImplementedException();
+            App.Window.SetView(MenuView);
+            App.Window.Clear();
+            //App.Window.Draw();
         }
 
         public void HandleInput()
