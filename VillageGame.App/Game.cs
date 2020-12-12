@@ -15,7 +15,7 @@ namespace VillageGame.App
 
         public Game(uint resolutionH, uint resolutionV)
         {
-            Window = new RenderWindow(new VideoMode(resolutionH, resolutionV), WindowName);
+            Window = new RenderWindow(new VideoMode(resolutionH, resolutionV), _WindowName);
         }
 
         public void GameLoop()
