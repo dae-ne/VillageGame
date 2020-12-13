@@ -1,8 +1,8 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
-using VillageGame.App.Tiles;
-using VillageGame.App.Views;
+using VillageGame.App.Level;
+using VillageGame.App.Level;
 
 namespace VillageGame.App.States
 {

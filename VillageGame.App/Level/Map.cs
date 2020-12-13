@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using VillageGame.App.Tiles;
 
-namespace VillageGame.App.Views
+namespace VillageGame.App.Level
 {
     class Map : Drawable
     {

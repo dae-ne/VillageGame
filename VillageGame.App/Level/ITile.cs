@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace VillageGame.App.Tiles
+namespace VillageGame.App.Level
 {
     interface ITile : Drawable
     {
