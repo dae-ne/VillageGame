@@ -49,15 +49,39 @@ namespace VillageGame.App.Level
                     switch (number)
                     {
                         case 0:
-                            _tiles.Add(tiles["empty"]);
+                            _tiles.Add(tiles["grass1"]);
                             break;
 
                         case 1:
-                            _tiles.Add(tiles["grass"]);
+                            _tiles.Add(tiles["grass2"]);
                             break;
 
                         case 2:
+                            _tiles.Add(tiles["path1"]);
+                            break;
+
+                        case 3:
+                            _tiles.Add(tiles["path2"]);
+                            break;
+
+                        case 4:
                             _tiles.Add(tiles["water"]);
+                            break;
+
+                        case 5:
+                            _tiles.Add(tiles["tree1"]);
+                            break;
+
+                        case 6:
+                            _tiles.Add(tiles["tree2"]);
+                            break;
+
+                        case 7:
+                            _tiles.Add(tiles["tree3"]);
+                            break;
+
+                        case 8:
+                            _tiles.Add(tiles["tree4"]);
                             break;
                     }
                 }

@@ -58,9 +58,8 @@ namespace VillageGame.App
         {
             try
             {
-                _textureManager.LoadTexture("emtpy", "Images/Empty.png");
-                _textureManager.LoadTexture("grass", "Images/Grass.png");
-                _textureManager.LoadTexture("water", "Images/Water.png");
+                _textureManager.LoadTexture("ground", "Images/Ground.png");
+                _textureManager.LoadTexture("trees", "Images/Trees.png");
             }
             catch
             {
@@ -83,9 +82,15 @@ namespace VillageGame.App
 
         private void SetTiles()
         {
-            _tiles.Add("empty", new Tile(_textureManager.GetTexture("emtpy"), TileType.Empty));
-            _tiles.Add("grass", new Tile(_textureManager.GetTexture("grass"), TileType.Grass));
-            _tiles.Add("water", new Tile(_textureManager.GetTexture("water"), TileType.Water));
+            _tiles.Add("water", new Tile(_textureManager.GetTexture("ground"), TileType.Water, new Vector2i(0, 0)));
+            _tiles.Add("grass1", new Tile(_textureManager.GetTexture("ground"), TileType.Empty, new Vector2i(1, 0)));
+            _tiles.Add("grass2", new Tile(_textureManager.GetTexture("ground"), TileType.Empty, new Vector2i(2, 0)));
+            _tiles.Add("path1", new Tile(_textureManager.GetTexture("ground"), TileType.Grass, new Vector2i(3, 0)));
+            _tiles.Add("path2", new Tile(_textureManager.GetTexture("ground"), TileType.Grass, new Vector2i(4, 0)));
+            _tiles.Add("tree1", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(0, 0)));
+            _tiles.Add("tree2", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(1, 0)));
+            _tiles.Add("tree3", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(2, 0)));
+            _tiles.Add("tree4", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(3, 0)));
         }
 
         private void SetStyles()

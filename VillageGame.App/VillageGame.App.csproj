@@ -24,6 +24,12 @@
     <None Update="Images\Grass.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Images\Ground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Trees.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Images\Water.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

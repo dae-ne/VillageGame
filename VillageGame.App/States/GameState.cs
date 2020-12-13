@@ -2,6 +2,7 @@
 using SFML.System;
 using System.Collections.Generic;
 using VillageGame.App.Level;
+using VillageGame.App.Tiles;
 
 namespace VillageGame.App.States
 {
