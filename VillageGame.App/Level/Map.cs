@@ -11,35 +11,36 @@ namespace VillageGame.App.Level
 {
     class Map : Drawable
     {
-        private int _height = 0;
-        private int _width = 0;
         private int _tileSize = 16;
         private List<ITile> _tiles = new List<ITile>();
 
+        public int Height { get; private set; }
+        public int Width { get; private set; }
+
         public void Draw(RenderTarget target, RenderStates states)
         {
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     var position = new Vector2f();
                     position.X = x * _tileSize;
                     position.Y = y * _tileSize;
-                    var currentIndex = y * _width + x;
+                    var currentIndex = y * Width + x;
                     _tiles[currentIndex].TileSprite.Position = position;
                     target.Draw(_tiles[currentIndex]);
                 }
             }
         }
 
-        public async Task LoadFromFileAsync(string path, Dictionary<string, ITile> tiles)
+        public void LoadFromFile(string path, Dictionary<string, ITile> tiles)
         {
             try
             {
-                var fileText = await File.ReadAllTextAsync(path);
+                var fileText = File.ReadAllText(path);
                 var numbersAsStringArr = fileText.Split(' ').ToList();
-                _width = Int32.Parse(numbersAsStringArr[0]);
-                _height = Int32.Parse(numbersAsStringArr[1]);
+                Width = Int32.Parse(numbersAsStringArr[0]);
+                Height = Int32.Parse(numbersAsStringArr[1]);
                 numbersAsStringArr.RemoveRange(0, 2);
 
                 foreach (var numberStr in numbersAsStringArr)
@@ -94,7 +95,7 @@ namespace VillageGame.App.Level
 
         public async Task SaveToFileAsync()
         {
-            var outputString = $"{_width} {_height}";
+            var outputString = $"{Width} {Height}";
 
             foreach (var value in _tiles)
             {
@@ -104,7 +105,7 @@ namespace VillageGame.App.Level
             try
             {
                 using var file = new StreamWriter("Saves/" + DateTime.Now.ToString());
-                await file.WriteAsync($"{_width} {_height}");
+                await file.WriteAsync($"{Width} {Height}");
             }
             catch
             {

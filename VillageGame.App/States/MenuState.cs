@@ -19,7 +19,7 @@ namespace VillageGame.App.States
             App.Window.Clear();
         }
 
-        public void HandleInput()
+        public void SetEvents()
         {
             throw new System.NotImplementedException();
         }
