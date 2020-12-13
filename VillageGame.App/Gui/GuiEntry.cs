@@ -8,7 +8,7 @@ namespace VillageGame.App.Gui
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            throw new System.NotImplementedException();
+            target.Draw(_rectangle);
         }
     }
 }
