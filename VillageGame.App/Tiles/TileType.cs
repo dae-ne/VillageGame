@@ -1,4 +1,4 @@
-﻿namespace VillageGame.App.Level
+﻿namespace VillageGame.App.Tiles
 {
     enum TileType
     {

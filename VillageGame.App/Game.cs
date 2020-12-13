@@ -1,11 +1,11 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using VillageGame.App.States;
-using VillageGame.App.Level;
 using VillageGame.App.Gui;
-using SFML.System;
+using VillageGame.App.States;
+using VillageGame.App.Tiles;
 
 namespace VillageGame.App
 {

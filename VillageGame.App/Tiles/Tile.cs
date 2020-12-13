@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace VillageGame.App.Level
+namespace VillageGame.App.Tiles
 {
     class Tile : ITile
     {
