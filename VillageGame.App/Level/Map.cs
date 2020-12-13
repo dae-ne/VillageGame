@@ -12,7 +12,7 @@ namespace VillageGame.App.Level
     {
         private int _height = 0;
         private int _width = 0;
-        private int _tileSize = 8;
+        private int _tileSize = 16;
         private List<ITile> _tiles = new List<ITile>();
 
         public void Draw(RenderTarget target, RenderStates states)
@@ -22,8 +22,8 @@ namespace VillageGame.App.Level
                 for (int x = 0; x < _width; x++)
                 {
                     var position = new Vector2f();
-                    position.X = (x - y) * _tileSize + _width * _tileSize;
-                    position.Y = (x + y) * _tileSize * 0.5f;
+                    position.X = x * _tileSize;
+                    position.Y = y * _tileSize;
                     var currentIndex = y * _width + x;
                     _tiles[currentIndex].TileSprite.Position = position;
                     target.Draw(_tiles[currentIndex]);
@@ -44,7 +44,21 @@ namespace VillageGame.App.Level
                 foreach (var numberStr in numbersAsStringArr)
                 {
                     var number = Int32.Parse(numberStr);
-                    _tiles.Add(tiles["grass"]);
+
+                    switch (number)
+                    {
+                        case 0:
+                            _tiles.Add(tiles["empty"]);
+                            break;
+
+                        case 1:
+                            _tiles.Add(tiles["grass"]);
+                            break;
+
+                        case 2:
+                            _tiles.Add(tiles["water"]);
+                            break;
+                    }
                 }
             }
             catch

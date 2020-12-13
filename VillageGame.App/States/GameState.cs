@@ -2,7 +2,6 @@
 using SFML.System;
 using System.Collections.Generic;
 using VillageGame.App.Level;
-using VillageGame.App.Level;
 
 namespace VillageGame.App.States
 {
@@ -11,7 +10,6 @@ namespace VillageGame.App.States
         private View _gameView = new View();
         private View _guiView = new View();
         private Map _map = new Map();
-        private float _zoomLevel = 1.0f;
 
         public Game App { get; }
 

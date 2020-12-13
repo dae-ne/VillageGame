@@ -17,7 +17,7 @@ namespace VillageGame.App
         private Dictionary<string, GuiStyle> _styles = new Dictionary<string, GuiStyle>();
         private IState _state;
         private const string _WindowName = "VillageGame";
-        private const int _TileSize = 8;
+        private const int _TileSize = 16;
 
         public RenderWindow Window { get; private set; }
 
@@ -58,7 +58,9 @@ namespace VillageGame.App
         {
             try
             {
+                _textureManager.LoadTexture("emtpy", "Images/Empty.png");
                 _textureManager.LoadTexture("grass", "Images/Grass.png");
+                _textureManager.LoadTexture("water", "Images/Water.png");
             }
             catch
             {
@@ -81,32 +83,20 @@ namespace VillageGame.App
 
         private void SetTiles()
         {
-            _tiles.Add("grass", new Tile(_textureManager.GetTexture("grass")));
+            _tiles.Add("empty", new Tile(_textureManager.GetTexture("emtpy"), TileType.Empty));
+            _tiles.Add("grass", new Tile(_textureManager.GetTexture("grass"), TileType.Grass));
+            _tiles.Add("water", new Tile(_textureManager.GetTexture("water"), TileType.Water));
         }
 
         private void SetStyles()
         {
-            _styles.Add("button",
-                        new GuiStyle(new Vector2f(50f, 50f),
-                                     _fonts["main"],
-                                     new Color(0xc6, 0xc6, 0xc6),
-                                     new Color(0x94, 0x94, 0x94),
-                                     new Color(0x00, 0x00, 0x00),
-                                     new Color(0x61, 0x61, 0x61),
-                                     new Color(0x94, 0x94, 0x94),
-                                     new Color(0x00, 0x00, 0x00),
-                                     10f));
+            _styles.Add("button", new GuiStyle(new Vector2f(50f, 50f), _fonts["main"], new Color(0xc6, 0xc6, 0xc6),
+                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
+                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), 10f));
             
-            _styles.Add("text",
-                        new GuiStyle(new Vector2f(50f, 50f),
-                                     _fonts["main"],
-                                     new Color(0x00, 0x00, 0x00),
-                                     new Color(0x00, 0x00, 0x00),
-                                     new Color(0xff, 0xff, 0xff),
-                                     new Color(0x00, 0x00, 0x00),
-                                     new Color(0x00, 0x00, 0x00),
-                                     new Color(0xff, 0xff, 0xff),
-                                     10f));
+            _styles.Add("text", new GuiStyle(new Vector2f(50f, 50f), _fonts["main"], new Color(0x00, 0x00, 0x00),
+                new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), new Color(0x00, 0x00, 0x00),
+                new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), 10f));
         }
     }
 }
