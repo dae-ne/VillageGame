@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace VillageGame.App.Gui
 {
@@ -8,27 +8,43 @@ namespace VillageGame.App.Gui
     {
         public enum Direction { Horizontal, Vertical }
 
-        private readonly List<GuiEntry> _entries;
+        private readonly List<GuiEntry> _entries = new List<GuiEntry>();
         private readonly GuiStyle _guiStyle;
         private readonly Direction _direction;
         private readonly int _padding;
 
-        public Gui(IEnumerable<GuiEntry> entries, GuiStyle style, Direction direction, int padding)
+        public Gui(IEnumerable<string> entries, GuiStyle style, Direction direction, int padding)
         {
-            _entries = entries.ToList();
             _guiStyle = style;
             _direction = direction;
             _padding = padding;
 
-            var background = SetBackground(style);
+            var shape = SetEntryShape(style);
+            SetEntries(entries, style, shape);
         }
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            throw new System.NotImplementedException();
+            foreach (var entry in _entries)
+            {
+                target.Draw(entry);
+            }
         }
 
-        private RectangleShape SetBackground(GuiStyle style)
+        public GuiEntry GetSelectedEntry(Vector2f mousePosition)
+        {
+            foreach (var entry in _entries)
+            {
+                if (entry.Contains(mousePosition))
+                {
+                    return entry;
+                }
+            }
+
+            return null;
+        }
+
+        private RectangleShape SetEntryShape(GuiStyle style)
         {
             RectangleShape rectangle = new RectangleShape();
             rectangle.Size = style.Dimensions;
@@ -38,11 +54,14 @@ namespace VillageGame.App.Gui
             return rectangle;
         }
 
-        private void SetEntries(GuiStyle style)
+        private void SetEntries(IEnumerable<string> entries, GuiStyle style, RectangleShape shape)
         {
-            foreach (var entry in _entries)
+            foreach (var entry in entries)
             {
-
+                Text text = new Text(entry, style.Font);
+                text.FillColor = style.TextColor;
+                text.CharacterSize = (uint)(style.Dimensions.Y - style.BorderThickness - _padding);
+                _entries.Add(new GuiEntry(shape, text));
             }
         }
     }
