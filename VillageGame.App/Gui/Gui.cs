@@ -64,5 +64,23 @@ namespace VillageGame.App.Gui
                 _entries.Add(new GuiEntry(shape, text));
             }
         }
+
+        private void SetPositionOfEntries()
+        {
+            foreach (var entry in _entries)
+            {
+                //Vector2f origin = this->getOrigin();
+                //origin -= offset;
+                //entry.shape.setOrigin(origin);
+                //entry.text.setOrigin(origin);
+
+                ///* Compute the position of the entry. */
+                //entry.shape.setPosition(this->getPosition());
+                //entry.text.setPosition(this->getPosition());
+
+                //if (this->horizontal) offset.x += this->dimensions.x;
+                //else offset.y += this->dimensions.y;
+            }
+        }
     }
 }

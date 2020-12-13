@@ -4,12 +4,14 @@ namespace VillageGame.App.Level
 {
     class Tile : ITile
     {
-        public Sprite TileSprite { get; }
+        private TileType _tileType;
 
-        public Tile(Texture texture)
+        public Sprite TileSprite { get; } = new Sprite();
+
+        public Tile(Texture texture, TileType tileType)
         {
-            TileSprite = new Sprite();
             TileSprite.Texture = texture;
+            _tileType = tileType;
         }
 
         public void Draw(RenderTarget target, RenderStates states)
