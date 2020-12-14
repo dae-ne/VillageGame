@@ -4,23 +4,23 @@ using System.Collections.Generic;
 
 namespace VillageGame.App.Gui
 {
-    class Gui : Transformable, Drawable
+    class GuiElement : Transformable, Drawable
     {
         public enum Direction { Horizontal, Vertical }
 
         private readonly List<GuiEntry> _entries = new List<GuiEntry>();
-        private readonly GuiStyle _guiStyle;
+        //private readonly GuiStyle _guiStyle;
         private readonly Direction _direction;
         private readonly int _padding;
 
-        public Gui(IEnumerable<string> entries, GuiStyle style, Direction direction, int padding)
+        public GuiElement(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size)
         {
-            _guiStyle = style;
+            //_guiStyle = style;
             _direction = direction;
-            _padding = padding;
 
-            var shape = SetEntryShape(style);
-            SetEntries(entries, style, shape);
+            //var shape = SetShape(style, size);
+            SetEntries(entries, style, size);
+            SetPositionOfEntries(style, size);
         }
 
         public void Draw(RenderTarget target, RenderStates states)
@@ -44,42 +44,46 @@ namespace VillageGame.App.Gui
             return null;
         }
 
-        private RectangleShape SetEntryShape(GuiStyle style)
+        private RectangleShape SetShape(GuiStyle style, Vector2f size)
         {
             RectangleShape rectangle = new RectangleShape();
-            rectangle.Size = style.Dimensions;
             rectangle.FillColor = style.BodyColor;
             rectangle.OutlineThickness = style.BorderThickness;
             rectangle.OutlineColor = style.BorderColor;
+            rectangle.Size = size;
             return rectangle;
         }
 
-        private void SetEntries(IEnumerable<string> entries, GuiStyle style, RectangleShape shape)
+        private void SetEntries(IEnumerable<string> entries, GuiStyle style, Vector2f size)
         {
             foreach (var entry in entries)
             {
+                var shape = SetShape(style, size);
                 Text text = new Text(entry, style.Font);
                 text.FillColor = style.TextColor;
-                text.CharacterSize = (uint)(style.Dimensions.Y - style.BorderThickness - _padding);
+                text.CharacterSize = (uint)(size.Y - style.BorderThickness);
                 _entries.Add(new GuiEntry(shape, text));
             }
         }
 
-        private void SetPositionOfEntries()
+        private void SetPositionOfEntries(GuiStyle style, Vector2f size)
         {
+            var offset = new Vector2f(0.0f, 0.0f);
+
             foreach (var entry in _entries)
             {
-                //Vector2f origin = this->getOrigin();
-                //origin -= offset;
-                //entry.shape.setOrigin(origin);
-                //entry.text.setOrigin(origin);
+                var position = this.Position;
+                position -= offset;
+                entry.SetPosition(position);
 
-                ///* Compute the position of the entry. */
-                //entry.shape.setPosition(this->getPosition());
-                //entry.text.setPosition(this->getPosition());
-
-                //if (this->horizontal) offset.x += this->dimensions.x;
-                //else offset.y += this->dimensions.y;
+                if (_direction == Direction.Horizontal)
+                {
+                    offset.X += size.X + style.BorderThickness;
+                }
+                else
+                {
+                    offset.Y -= size.Y + style.BorderThickness;
+                }
             }
         }
     }

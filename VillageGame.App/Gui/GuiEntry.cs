@@ -31,5 +31,11 @@ namespace VillageGame.App.Gui
 
             return rect.Contains((int)mousePosition.X, (int)mousePosition.Y);
         }
+
+        public void SetPosition(Vector2f position)
+        {
+            _shape.Position = position;
+            _text.Position = position;
+        }
     }
 }

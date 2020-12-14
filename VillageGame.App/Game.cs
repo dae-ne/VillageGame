@@ -26,6 +26,9 @@ namespace VillageGame.App
             LoadTextures();
             SetTiles();
             Window = new RenderWindow(new VideoMode(resolutionH, resolutionV), _WindowName);
+            LoadFonts();
+            SetStyles();
+            SetStateAsGame();
         }
 
         public void Run()
@@ -33,7 +36,6 @@ namespace VillageGame.App
             Window.SetFramerateLimit(60);
             Window.SetActive();
             Window.Closed += (sender, e) => ((Window)sender).Close();
-            SetStateAsGame();
 
             while (Window.IsOpen)
             {
@@ -46,7 +48,7 @@ namespace VillageGame.App
 
         public void SetStateAsGame()
         {
-            _state = new GameState(this, _tiles);
+            _state = new GameState(this, _tiles, _styles["button"]);
         }
 
         public void SetStateAsMenu()
@@ -95,11 +97,11 @@ namespace VillageGame.App
 
         private void SetStyles()
         {
-            _styles.Add("button", new GuiStyle(new Vector2f(50f, 50f), _fonts["main"], new Color(0xc6, 0xc6, 0xc6),
+            _styles.Add("button", new GuiStyle(_fonts["main"], new Color(0xc6, 0xc6, 0xc6),
                 new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
-                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), 10f));
+                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), 2f));
             
-            _styles.Add("text", new GuiStyle(new Vector2f(50f, 50f), _fonts["main"], new Color(0x00, 0x00, 0x00),
+            _styles.Add("text", new GuiStyle(_fonts["main"], new Color(0x00, 0x00, 0x00),
                 new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), new Color(0x00, 0x00, 0x00),
                 new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), 10f));
         }
