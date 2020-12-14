@@ -20,9 +20,19 @@ namespace VillageGame.App.Tiles
             _partOfTexture = partOfTexture;
         }
 
+        public Tile(Tile tile)
+            : this(tile.TileSprite.Texture, tile._tileType, tile._partOfTexture)
+        {
+        }
+
         public void Draw(RenderTarget target, RenderStates states)
         {
             target.Draw(TileSprite);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

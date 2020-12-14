@@ -39,7 +39,7 @@ namespace VillageGame.App
             {
                 Window.DispatchEvents();
 
-                //_state.Update();
+                _state.Update();
                 _state.Draw();
             }
         }

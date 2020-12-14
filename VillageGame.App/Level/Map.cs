@@ -11,9 +11,10 @@ namespace VillageGame.App.Level
 {
     class Map : Drawable
     {
-        private int _tileSize = 16;
         private List<ITile> _tiles = new List<ITile>();
+        public const int TileSize = 16;
 
+        public IEnumerable<ITile> Tiles => _tiles;
         public int Height { get; private set; }
         public int Width { get; private set; }
 
@@ -24,8 +25,8 @@ namespace VillageGame.App.Level
                 for (int x = 0; x < Width; x++)
                 {
                     var position = new Vector2f();
-                    position.X = x * _tileSize;
-                    position.Y = y * _tileSize;
+                    position.X = x * TileSize;
+                    position.Y = y * TileSize;
                     var currentIndex = y * Width + x;
                     _tiles[currentIndex].TileSprite.Position = position;
                     target.Draw(_tiles[currentIndex]);
@@ -50,39 +51,23 @@ namespace VillageGame.App.Level
                     switch (number)
                     {
                         case 0:
-                            _tiles.Add(tiles["grass1"]);
+                            _tiles.Add(new Tile((Tile)tiles["grass1"]));
                             break;
 
                         case 1:
-                            _tiles.Add(tiles["grass2"]);
+                            _tiles.Add(new Tile((Tile)tiles["grass2"]));
                             break;
 
                         case 2:
-                            _tiles.Add(tiles["path1"]);
+                            _tiles.Add(new Tile((Tile)tiles["path1"]));
                             break;
 
                         case 3:
-                            _tiles.Add(tiles["path2"]);
+                            _tiles.Add(new Tile((Tile)tiles["path2"]));
                             break;
 
                         case 4:
-                            _tiles.Add(tiles["water"]);
-                            break;
-
-                        case 5:
-                            _tiles.Add(tiles["tree1"]);
-                            break;
-
-                        case 6:
-                            _tiles.Add(tiles["tree2"]);
-                            break;
-
-                        case 7:
-                            _tiles.Add(tiles["tree3"]);
-                            break;
-
-                        case 8:
-                            _tiles.Add(tiles["tree4"]);
+                            _tiles.Add(new Tile((Tile)tiles["water"]));
                             break;
                     }
                 }
