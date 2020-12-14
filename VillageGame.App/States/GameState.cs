@@ -56,10 +56,8 @@ namespace VillageGame.App.States
 
         public void Update()
         {
-            //foreach (var tile in _map.Tiles)
             for (int i = 0; i < _map.Tiles.Count(); i++)
             {
-                //tile.TileSprite.Color = new Color(0xff, 0xff, 0xff);
                 _map.Tiles.ElementAt(i).TileSprite.Color = new Color(0xff, 0xff, 0xff);
             }
 
