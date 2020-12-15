@@ -32,6 +32,11 @@ namespace VillageGame.App.Gui
             }
         }
 
+        public int GetIndexOfEntry(GuiEntry entry)
+        {
+            return _entries.IndexOf(entry);
+        }
+
         public GuiEntry GetSelectedEntry(Vector2f mousePosition)
         {
             foreach (var entry in _entries)

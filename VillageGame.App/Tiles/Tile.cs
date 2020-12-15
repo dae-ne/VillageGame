@@ -7,10 +7,10 @@ namespace VillageGame.App.Tiles
     {
         private TileType _tileType;
         private Vector2i _partOfTexture;
-        //private float _tileSizeinPixels = 16;
-        //private int _tileSize = 1;
 
         public Sprite TileSprite { get; } = new Sprite();
+        public Sprite Object { get; } = new Sprite();
+        public bool HasObject { get; private set; } = false;
 
         public Tile(Texture texture, TileType tileType, Vector2i partOfTexture)
         {
@@ -28,11 +28,15 @@ namespace VillageGame.App.Tiles
         public void Draw(RenderTarget target, RenderStates states)
         {
             target.Draw(TileSprite);
+            target.Draw(Object);
         }
 
-        public object Clone()
+        public void AddObject(Texture texture, Vector2i partOfTexture)
         {
-            return MemberwiseClone();
+            Object.Texture = texture;
+            HasObject = true;
+            Object.TextureRect = new IntRect(partOfTexture.X * 16, partOfTexture.Y * 16, 16, 16);
+            Object.Position = TileSprite.Position;
         }
     }
 }

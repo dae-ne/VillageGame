@@ -47,7 +47,7 @@ namespace VillageGame.App
 
         public void SetStateAsGame()
         {
-            _state = new GameState(this, _tiles, _styles["button"]);
+            _state = new GameState(this, _tiles, _styles["button"], _textureManager);
         }
 
         private void LoadTextures()
@@ -55,6 +55,7 @@ namespace VillageGame.App
             try
             {
                 _textureManager.LoadTexture("ground", "Images/Ground.png");
+                _textureManager.LoadTexture("buildings", "Images/Chapels.png");
             }
             catch
             {
@@ -87,7 +88,7 @@ namespace VillageGame.App
         private void SetStyles()
         {
             _styles.Add("button", new GuiStyle(_fonts["main"], new Color(0xc6, 0xc6, 0xc6),
-                new Color(0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
+                new Color(0x00, 0x00, 0xff), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
                 new Color(0xff, 0xff, 0xff), new Color(0x94, 0x94, 0x94), 2.0f));
         }
     }

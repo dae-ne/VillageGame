@@ -20,12 +20,14 @@ namespace VillageGame.App.States
         private Vector2i _selectedTile = new Vector2i(-1, -1);
         private float _zoomLevel = 1.0f;
         private GuiEntry _selectedGuiEntry = null;
+        private readonly TextureManager _textureManager;
 
         public Game App { get; }
 
-        public GameState(Game game, Dictionary<string, ITile> tiles, GuiStyle style)
+        public GameState(Game game, Dictionary<string, ITile> tiles, GuiStyle style, TextureManager textureManager)
         {
             App = game;
+            _textureManager = textureManager;
             var windowSizeUint = App.Window.Size;
             var x = (float)windowSizeUint.X;
             var y = (float)windowSizeUint.Y;
@@ -99,7 +101,22 @@ namespace VillageGame.App.States
                     {
                         if (entry != null)
                         {
-                            var x = 0;
+                            var indexOfEntry = _gui.GetIndexOfEntry(entry);
+                            var indexOfTile = _selectedTile.X + _map.Width * _selectedTile.Y;
+
+                            switch (indexOfEntry)
+                            {
+                                case 0:
+                                    _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    break;
+
+                                case 1:
+                                    _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(2, 0));
+                                    break;
+                            }
+
+                            _selectedTile.X = -1;
+                            _selectedTile.Y = -1;
                         }
                     }
                     if (entry == null)
@@ -122,6 +139,14 @@ namespace VillageGame.App.States
                             {
                                 _selectedTile.X = (int)(position.X / Map.TileSize);
                                 _selectedTile.Y = (int)(position.Y / Map.TileSize);
+
+                                var indexOfTile = _selectedTile.X + _map.Width * _selectedTile.Y;
+
+                                if (_map.Tiles.ElementAt(indexOfTile).HasObject)
+                                {
+                                    _selectedTile.X = -1;
+                                    _selectedTile.Y = -1;
+                                }
                             }
 
                             if (_selectedTile.X >= _map.Width || _selectedTile.Y >= _map.Height)
@@ -185,9 +210,11 @@ namespace VillageGame.App.States
         private void SetGui(GuiStyle style)
         {
             var entries = new[] {
-                "fielf1",
-                "field2",
-                "asdfasdfsadf"
+                "Kamieniołom: 500 zł",
+                "Tartak: 3000 zł",
+                "Chatka drwala: 1500zł",
+                "Kopalnia złota: 5000 zł",
+                "Mennica: 10000 zł"
             };
             
             _gui = new GuiElement(entries, style, GuiElement.Direction.Vertical, new Vector2f(300, 30));
