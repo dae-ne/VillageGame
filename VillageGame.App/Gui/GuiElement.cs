@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VillageGame.App.Gui
 {
@@ -48,6 +49,11 @@ namespace VillageGame.App.Gui
             }
 
             return null;
+        }
+
+        public void SetTextOfEntry(int index, string text)
+        {
+            _entries.ElementAt(index).EntryText.DisplayedString = text;
         }
 
         public void Highlight(GuiEntry entry)

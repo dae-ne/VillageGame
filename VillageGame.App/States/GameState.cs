@@ -18,9 +18,12 @@ namespace VillageGame.App.States
         private GuiElement _gui2;
         private Vector2i _mousePosition = Mouse.GetPosition();
         private Vector2i _selectedTile = new Vector2i(-1, -1);
-        private float _zoomLevel = 1.0f;
+        private float _zoomLevel = 0.20f;
         private GuiEntry _selectedGuiEntry = null;
         private readonly TextureManager _textureManager;
+        private Village _village = new Village();
+        private VillageCareTaker _careTaker = new VillageCareTaker();
+        private Clock _clock = new Clock();
 
         public Game App { get; }
 
@@ -55,7 +58,6 @@ namespace VillageGame.App.States
 
         public void Draw()
         {
-
             App.Window.Clear();
             App.Window.SetView(_gameView);
             App.Window.Draw(_map);
@@ -70,6 +72,9 @@ namespace VillageGame.App.States
             _gui.Update();
             _gui2.Update();
             _gui.UnHighlightAll();
+
+            _gui2.SetTextOfEntry(0, $"Kasa: {_village.Money} zł");
+            _gui2.SetTextOfEntry(1, $"Czas: {(int)_clock.ElapsedTime.AsSeconds()} s");
 
             if (_selectedGuiEntry != null)
             {
@@ -90,6 +95,19 @@ namespace VillageGame.App.States
 
         public void SetEvents()
         {
+            App.Window.KeyPressed += (sender, e) =>
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.LControl) && Keyboard.IsKeyPressed(Keyboard.Key.Z))
+                {
+                    var momento = _careTaker.Pop();
+
+                    if (momento != null)
+                    {
+                        _village.RestoreStateFromMomento(momento);
+                    }
+                }
+            };
+
             App.Window.MouseButtonPressed += (sender, e) =>
             {
                 if (e.Button == Mouse.Button.Left)
@@ -103,15 +121,48 @@ namespace VillageGame.App.States
                         {
                             var indexOfEntry = _gui.GetIndexOfEntry(entry);
                             var indexOfTile = _selectedTile.X + _map.Width * _selectedTile.Y;
+                            var momento = _village.SaveStateToMomento();
 
                             switch (indexOfEntry)
                             {
                                 case 0:
-                                    _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    if (_village.BuildQuarry())
+                                    {
+                                        _careTaker.Push(momento);
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    }
                                     break;
 
                                 case 1:
-                                    _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(2, 0));
+                                    if (_village.BuildSawmill())
+                                    {
+                                        _careTaker.Push(momento);
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    }
+                                    break;
+
+                                case 2:
+                                    if (_village.BuildCottage())
+                                    {
+                                        _careTaker.Push(momento);
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    }
+                                    break;
+
+                                case 3:
+                                    if (_village.BuildGoldMine())
+                                    {
+                                        _careTaker.Push(momento);
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    }
+                                    break;
+
+                                case 4:
+                                    if (_village.BuildMint())
+                                    {
+                                        _careTaker.Push(momento);
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                    }
                                     break;
                             }
 
@@ -216,9 +267,14 @@ namespace VillageGame.App.States
                 "Kopalnia złota: 5000 zł",
                 "Mennica: 10000 zł"
             };
-            
+
+            var entries2 = new[] {
+                "",
+                ""
+            };
+
             _gui = new GuiElement(entries, style, GuiElement.Direction.Vertical, new Vector2f(300, 30));
-            _gui2 = new GuiElement(entries, style, GuiElement.Direction.Horizontal, new Vector2f(300, 30));
+            _gui2 = new GuiElement(entries2, style, GuiElement.Direction.Horizontal, new Vector2f(300, 30));
             _gui.Position = new Vector2f(0, App.Window.Size.Y - 2 * _gui.SizeOfEntry.Y);
             _gui2.Position = new Vector2f(0, App.Window.Size.Y - _gui.SizeOfEntry.Y);
             _gui2.SetSizeOfEntires(new Vector2f(App.Window.Size.X / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));
