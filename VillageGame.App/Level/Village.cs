@@ -4,14 +4,44 @@ namespace VillageGame.App.Level
 {
     class Village
     {
+        private bool _isGoldMineBuilt = false;
+        private bool _isQuarryBuilt = false;
+        private bool _isSawmillBuilt = false;
+        private bool _isCottageBuilt = false;
+        private bool _isMintBuilt = false;
+
         public int Money { get; private set; } = 2000;
         public int Counter { get; private set; } = 0;
 
-        public bool BuildGoldMine() => BuildBuilding(5000, 100);
-        public bool BuildQuarry() => BuildBuilding(500, 200);
-        public bool BuildSawmill() => BuildBuilding(3000, 500);
-        public bool BuildCottage() => BuildBuilding(1500, 300);
-        public bool BuildMint() => BuildBuilding(10000, 500);
+        public bool BuildGoldMine()
+        {
+            return BuildBuilding(5000, 100);
+            _isGoldMineBuilt = true;
+        }
+
+        public bool BuildQuarry()
+        {
+            return BuildBuilding(500, 200);
+            _isQuarryBuilt = true;
+        }
+
+        public bool BuildSawmill()
+        {
+            return BuildBuilding(3000, 500);
+            _isSawmillBuilt = true;
+        }
+
+        public bool BuildCottage()
+        {
+            return BuildBuilding(1500, 300);
+            _isCottageBuilt = true;
+        }
+
+        public bool BuildMint()
+        {
+            return BuildBuilding(10000, 500);
+            _isCottageBuilt = true;
+        }
 
         public VillageMomento SaveStateToMomento()
         {

@@ -73,7 +73,7 @@ namespace VillageGame.App.States
             _gui2.Update();
             _gui.UnHighlightAll();
 
-            _gui2.SetTextOfEntry(0, $"Kasa: {_village.Money} zł");
+            _gui2.SetTextOfEntry(0, $"Pijōndze: {_village.Money}");
             _gui2.SetTextOfEntry(1, $"Czas: {(int)_clock.ElapsedTime.AsSeconds()} s");
 
             if (_selectedGuiEntry != null)
@@ -129,7 +129,7 @@ namespace VillageGame.App.States
                                     if (_village.BuildQuarry())
                                     {
                                         _careTaker.Push(momento);
-                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("resources"), new Vector2i(0, 3));
                                     }
                                     break;
 
@@ -137,7 +137,7 @@ namespace VillageGame.App.States
                                     if (_village.BuildSawmill())
                                     {
                                         _careTaker.Push(momento);
-                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("workshops"), new Vector2i(0, 2));
                                     }
                                     break;
 
@@ -145,7 +145,7 @@ namespace VillageGame.App.States
                                     if (_village.BuildCottage())
                                     {
                                         _careTaker.Push(momento);
-                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("huts"), new Vector2i(1, 0));
                                     }
                                     break;
 
@@ -153,7 +153,7 @@ namespace VillageGame.App.States
                                     if (_village.BuildGoldMine())
                                     {
                                         _careTaker.Push(momento);
-                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("resources"), new Vector2i(0, 4));
                                     }
                                     break;
 
@@ -161,7 +161,7 @@ namespace VillageGame.App.States
                                     if (_village.BuildMint())
                                     {
                                         _careTaker.Push(momento);
-                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("buildings"), new Vector2i(0, 0));
+                                        _map.Tiles.ElementAt(indexOfTile).AddObject(_textureManager.GetTexture("resources"), new Vector2i(2, 0));
                                     }
                                     break;
                             }
@@ -261,11 +261,11 @@ namespace VillageGame.App.States
         private void SetGui(GuiStyle style)
         {
             var entries = new[] {
-                "Kamieniołom: 500 zł",
-                "Tartak: 3000 zł",
-                "Chatka drwala: 1500zł",
-                "Kopalnia złota: 5000 zł",
-                "Mennica: 10000 zł"
+                "Kamieniołom: 500",
+                "Tartak: 3000",
+                "Chatka siōngŏrza: 1500",
+                "Gruba złotŏ: 5000",
+                "Mennica: 10000"
             };
 
             var entries2 = new[] {

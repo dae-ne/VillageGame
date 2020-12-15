@@ -55,7 +55,9 @@ namespace VillageGame.App
             try
             {
                 _textureManager.LoadTexture("ground", "Images/Ground.png");
-                _textureManager.LoadTexture("buildings", "Images/Chapels.png");
+                _textureManager.LoadTexture("huts", "Images/Huts.png");
+                _textureManager.LoadTexture("resources", "Images/Resources.png");
+                _textureManager.LoadTexture("workshops", "Images/Workshops.png");
             }
             catch
             {
