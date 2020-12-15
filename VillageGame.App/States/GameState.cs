@@ -18,7 +18,7 @@ namespace VillageGame.App.States
         private GuiElement _gui2;
         private Vector2i _mousePosition = Mouse.GetPosition();
         private Vector2i _selectedTile = new Vector2i(-1, -1);
-        private float _zoomLevel = 0.20f;
+        private float _zoomLevel = 0.5f;
         private GuiEntry _selectedGuiEntry = null;
         private readonly TextureManager _textureManager;
         private Village _village = new Village();
