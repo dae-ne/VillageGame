@@ -17,7 +17,6 @@ namespace VillageGame.App
         private Dictionary<string, GuiStyle> _styles = new Dictionary<string, GuiStyle>();
         private IState _state;
         private const string _WindowName = "VillageGame";
-        private const int _TileSize = 16;
 
         public RenderWindow Window { get; private set; }
 
@@ -51,17 +50,11 @@ namespace VillageGame.App
             _state = new GameState(this, _tiles, _styles["button"]);
         }
 
-        public void SetStateAsMenu()
-        {
-            _state = new MenuState(this);
-        }
-
         private void LoadTextures()
         {
             try
             {
                 _textureManager.LoadTexture("ground", "Images/Ground.png");
-                _textureManager.LoadTexture("trees", "Images/Trees.png");
             }
             catch
             {
@@ -73,7 +66,7 @@ namespace VillageGame.App
         {
             try
             {
-                var font = new Font("Fonts/Ratih Hyun.ttf");
+                var font = new Font("Fonts/ArialUnicodeMS.ttf");
                 _fonts.Add("main", font);
             }
             catch
@@ -89,21 +82,13 @@ namespace VillageGame.App
             _tiles.Add("grass2", new Tile(_textureManager.GetTexture("ground"), TileType.Empty, new Vector2i(2, 0)));
             _tiles.Add("path1", new Tile(_textureManager.GetTexture("ground"), TileType.Grass, new Vector2i(3, 0)));
             _tiles.Add("path2", new Tile(_textureManager.GetTexture("ground"), TileType.Grass, new Vector2i(4, 0)));
-            _tiles.Add("tree1", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(0, 0)));
-            _tiles.Add("tree2", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(1, 0)));
-            _tiles.Add("tree3", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(2, 0)));
-            _tiles.Add("tree4", new Tile(_textureManager.GetTexture("trees"), TileType.Grass, new Vector2i(3, 0)));
         }
 
         private void SetStyles()
         {
             _styles.Add("button", new GuiStyle(_fonts["main"], new Color(0xc6, 0xc6, 0xc6),
-                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
-                new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), 2f));
-            
-            _styles.Add("text", new GuiStyle(_fonts["main"], new Color(0x00, 0x00, 0x00),
-                new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), new Color(0x00, 0x00, 0x00),
-                new Color(0x00, 0x00, 0x00), new Color(0xff, 0xff, 0xff), 10f));
+                new Color(0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
+                new Color(0xff, 0xff, 0xff), new Color(0x94, 0x94, 0x94), 2.0f));
         }
     }
 }

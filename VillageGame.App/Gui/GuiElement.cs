@@ -9,18 +9,19 @@ namespace VillageGame.App.Gui
         public enum Direction { Horizontal, Vertical }
 
         private readonly List<GuiEntry> _entries = new List<GuiEntry>();
-        //private readonly GuiStyle _guiStyle;
+        private readonly GuiStyle _guiStyle;
         private readonly Direction _direction;
-        private readonly int _padding;
+
+        public Vector2f SizeOfEntry { get; private set; }
+        public int NumberOfEntries => _entries.Count;
 
         public GuiElement(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size)
         {
-            //_guiStyle = style;
+            _guiStyle = style;
             _direction = direction;
-
-            //var shape = SetShape(style, size);
-            SetEntries(entries, style, size);
-            SetPositionOfEntries(style, size);
+            SizeOfEntry = size;
+            SetEntries(entries);
+            SetPositionOfEntries();
         }
 
         public void Draw(RenderTarget target, RenderStates states)
@@ -44,29 +45,63 @@ namespace VillageGame.App.Gui
             return null;
         }
 
-        private RectangleShape SetShape(GuiStyle style, Vector2f size)
+        public void Highlight(GuiEntry entry)
+        {
+            entry.Shape.FillColor = _guiStyle.BodyHighlighColor;
+            entry.Shape.OutlineColor = _guiStyle.BorderHighlightColor;
+            entry.EntryText.FillColor = _guiStyle.TextHighlightColor;
+        }
+
+        public void UnHighlightAll()
+        {
+            foreach (var entry in _entries)
+            {
+                entry.Shape.FillColor = _guiStyle.BodyColor;
+                entry.Shape.OutlineColor = _guiStyle.BorderColor;
+                entry.EntryText.FillColor = _guiStyle.TextColor;
+            }
+        }
+
+        public void SetSizeOfEntires(Vector2f size)
+        {
+            foreach (var entry in _entries)
+            {
+                entry.Shape.Size = size;
+            }
+
+            SizeOfEntry = size;
+            SetPositionOfEntries();
+        }
+
+        public void Update()
+        {
+            SetPositionOfEntries();
+            //UnHighlightAll();
+        }
+
+        private RectangleShape SetShape()
         {
             RectangleShape rectangle = new RectangleShape();
-            rectangle.FillColor = style.BodyColor;
-            rectangle.OutlineThickness = style.BorderThickness;
-            rectangle.OutlineColor = style.BorderColor;
-            rectangle.Size = size;
+            rectangle.FillColor = _guiStyle.BodyColor;
+            rectangle.OutlineThickness = _guiStyle.BorderThickness;
+            rectangle.OutlineColor = _guiStyle.BorderColor;
+            rectangle.Size = SizeOfEntry;
             return rectangle;
         }
 
-        private void SetEntries(IEnumerable<string> entries, GuiStyle style, Vector2f size)
+        private void SetEntries(IEnumerable<string> entries)
         {
             foreach (var entry in entries)
             {
-                var shape = SetShape(style, size);
-                Text text = new Text(entry, style.Font);
-                text.FillColor = style.TextColor;
-                text.CharacterSize = (uint)(size.Y - style.BorderThickness);
+                var shape = SetShape();
+                Text text = new Text(entry, _guiStyle.Font);
+                text.FillColor = _guiStyle.TextColor;
+                text.CharacterSize = (uint)(SizeOfEntry.Y - _guiStyle.BorderThickness);
                 _entries.Add(new GuiEntry(shape, text));
             }
         }
 
-        private void SetPositionOfEntries(GuiStyle style, Vector2f size)
+        private void SetPositionOfEntries()
         {
             var offset = new Vector2f(0.0f, 0.0f);
 
@@ -78,11 +113,11 @@ namespace VillageGame.App.Gui
 
                 if (_direction == Direction.Horizontal)
                 {
-                    offset.X += size.X + style.BorderThickness;
+                    offset.X -= SizeOfEntry.X + _guiStyle.BorderThickness;
                 }
                 else
                 {
-                    offset.Y -= size.Y + style.BorderThickness;
+                    offset.Y += SizeOfEntry.Y + _guiStyle.BorderThickness;
                 }
             }
         }

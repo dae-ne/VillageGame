@@ -15,9 +15,11 @@ namespace VillageGame.App.States
         private View _guiView = new View();
         private Map _map = new Map();
         private GuiElement _gui;
+        private GuiElement _gui2;
         private Vector2i _mousePosition = Mouse.GetPosition();
         private Vector2i _selectedTile = new Vector2i(-1, -1);
         private float _zoomLevel = 1.0f;
+        private GuiEntry _selectedGuiEntry = null;
 
         public Game App { get; }
 
@@ -30,6 +32,7 @@ namespace VillageGame.App.States
             var windowSize = new Vector2f(x, y);
             _gameView.Size = windowSize;
             _guiView.Size = windowSize;
+            _gameView.Zoom(_zoomLevel);
             SetEvents();
             SetGui(style);
 
@@ -42,14 +45,10 @@ namespace VillageGame.App.States
                 throw;
             }
 
-            //Vector2f centre = new Vector2f(App.Window.Size.X * 0.5f, App.Window.Size.Y * 0.5f);
             Vector2f centre = new Vector2f(_map.Width * 0.5f, _map.Height * 0.5f);
             centre *= 16.0f;
             _gameView.Center = centre;
             _guiView.Reset(new FloatRect(0, 0, App.Window.Size.X, App.Window.Size.Y));
-            //_guiView.Center = new Vector2f(100, 200);
-            //_guiView.Center = new Vector2f(0, 0);
-            //_guiView.Size = new Vector2f(App.Window.Size.X, App.Window.Size.Y);
         }
 
         public void Draw()
@@ -60,11 +59,21 @@ namespace VillageGame.App.States
             App.Window.Draw(_map);
             App.Window.SetView(_guiView);
             App.Window.Draw(_gui);
+            App.Window.Draw(_gui2);
             App.Window.Display();
         }
 
         public void Update()
         {
+            _gui.Update();
+            _gui2.Update();
+            _gui.UnHighlightAll();
+
+            if (_selectedGuiEntry != null)
+            {
+                _gui.Highlight(_selectedGuiEntry);
+            }
+
             foreach (var tile in _map.Tiles)
             {
                 tile.TileSprite.Color = new Color(0xff, 0xff, 0xff);
@@ -83,19 +92,43 @@ namespace VillageGame.App.States
             {
                 if (e.Button == Mouse.Button.Left)
                 {
-                    _selectedTile.X = -1;
-                    _selectedTile.Y = -1;
+                    var mousePosition = new Vector2f(e.X, e.Y);
+                    var entry = _gui.GetSelectedEntry(mousePosition);
 
-                    foreach (var tile in _map.Tiles)
+                    if (_selectedTile.X >= 0 || _selectedTile.Y >= 0)
                     {
-                        Vector2f position = App.Window.MapPixelToCoords(Mouse.GetPosition(App.Window), _gameView);
-                        _selectedTile.X = (int)(position.X / Map.TileSize);
-                        _selectedTile.Y = (int)(position.Y / Map.TileSize);
-
-                        if (_selectedTile.X >= _map.Width || _selectedTile.Y >= _map.Height)
+                        if (entry != null)
                         {
-                            _selectedTile.X = -1;
-                            _selectedTile.Y = -1;
+                            var x = 0;
+                        }
+                    }
+                    if (entry == null)
+                    {
+                        _selectedTile.X = -1;
+                        _selectedTile.Y = -1;
+
+                        foreach (var tile in _map.Tiles)
+                        {
+                            var position = App.Window.MapPixelToCoords(Mouse.GetPosition(App.Window), _gameView);
+                            var x = position.X / Map.TileSize;
+                            var y = position.Y / Map.TileSize;
+
+                            if (x < 0 || y < 0)
+                            {
+                                _selectedTile.X = -1;
+                                _selectedTile.Y = -1;
+                            }
+                            else
+                            {
+                                _selectedTile.X = (int)(position.X / Map.TileSize);
+                                _selectedTile.Y = (int)(position.Y / Map.TileSize);
+                            }
+
+                            if (_selectedTile.X >= _map.Width || _selectedTile.Y >= _map.Height)
+                            {
+                                _selectedTile.X = -1;
+                                _selectedTile.Y = -1;
+                            }
                         }
                     }
                 }
@@ -103,7 +136,18 @@ namespace VillageGame.App.States
 
             App.Window.MouseMoved += (sender, e) =>
             {
-                if (Mouse.IsButtonPressed(Mouse.Button.Middle))
+                _selectedGuiEntry = null;
+                var isOverGui = false;
+                var mousePosition = new Vector2f(e.X, e.Y);
+                var entry = _gui.GetSelectedEntry(mousePosition);
+
+                if (entry != null)
+                {
+                    isOverGui = true;
+                    _selectedGuiEntry = entry;
+                }
+
+                if (Mouse.IsButtonPressed(Mouse.Button.Middle) && !isOverGui)
                 {
                     var positionTmp = Mouse.GetPosition() - _mousePosition;
                     var position = new Vector2f((float)positionTmp.X, (float)positionTmp.Y);
@@ -130,25 +174,27 @@ namespace VillageGame.App.States
             App.Window.Resized += (sender, e) =>
             {
                 _gameView.Size = new Vector2f(e.Width, e.Height);
+                _guiView.Reset(new FloatRect(0, 0, e.Width, e.Height));
                 _gameView.Zoom(_zoomLevel);
+                _gui.Position = new Vector2f(0, e.Height - 2 * _gui.SizeOfEntry.Y);
+                _gui2.Position = new Vector2f(0, e.Height - _gui.SizeOfEntry.Y);
+                _gui2.SetSizeOfEntires(new Vector2f(e.Width / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));
             };
         }
 
         private void SetGui(GuiStyle style)
         {
-            //var style = new GuiStyle(_fonts["main"], new Color(0xc6, 0xc6, 0xc6),
-            //    new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
-            //    new Color(0x94, 0x94, 0x94), new Color(0x00, 0x00, 0x00), 10f));
-
             var entries = new[] {
                 "fielf1",
                 "field2",
                 "asdfasdfsadf"
             };
-
-            _gui = new GuiElement(entries, style, GuiElement.Direction.Vertical, new Vector2f(200, 20));
-
-            //_gui.Position = new Vector2f(100, 1000);
+            
+            _gui = new GuiElement(entries, style, GuiElement.Direction.Vertical, new Vector2f(300, 30));
+            _gui2 = new GuiElement(entries, style, GuiElement.Direction.Horizontal, new Vector2f(300, 30));
+            _gui.Position = new Vector2f(0, App.Window.Size.Y - 2 * _gui.SizeOfEntry.Y);
+            _gui2.Position = new Vector2f(0, App.Window.Size.Y - _gui.SizeOfEntry.Y);
+            _gui2.SetSizeOfEntires(new Vector2f(App.Window.Size.X / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));
         }
     }
 }

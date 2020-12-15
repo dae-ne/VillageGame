@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using VillageGame.App.Tiles;
 
 namespace VillageGame.App.Level
@@ -71,26 +70,6 @@ namespace VillageGame.App.Level
                             break;
                     }
                 }
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public async Task SaveToFileAsync()
-        {
-            var outputString = $"{Width} {Height}";
-
-            foreach (var value in _tiles)
-            {
-                outputString += " 13";
-            }
-
-            try
-            {
-                using var file = new StreamWriter("Saves/" + DateTime.Now.ToString());
-                await file.WriteAsync($"{Width} {Height}");
             }
             catch
             {

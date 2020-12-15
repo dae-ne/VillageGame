@@ -9,6 +9,8 @@ namespace VillageGame.App.Gui
         private readonly Text _text;
 
         public bool IsActive { get; set; } = true;
+        public RectangleShape Shape => _shape;
+        public Text EntryText => _text;
 
         public GuiEntry(RectangleShape shape, Text text)
         {
