@@ -1,14 +1,13 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace VillageGame.App.Gui
+namespace VillageGame.App.GUI
 {
     class GuiEntry : Drawable
     {
         private readonly RectangleShape _shape;
         private readonly Text _text;
 
-        public bool IsActive { get; set; } = true;
         public RectangleShape Shape => _shape;
         public Text EntryText => _text;
 

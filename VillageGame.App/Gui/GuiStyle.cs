@@ -1,12 +1,11 @@
 ﻿using SFML.Graphics;
 
-namespace VillageGame.App.Gui
+namespace VillageGame.App.GUI
 {
     class GuiStyle
     {
         public Color BodyColor { get; set; }
-        public Color BodyHighlight { get; }
-        public Color BodyHighlighColor { get; set; }
+        public Color BodyHighlightColor { get; set; }
         public Color BorderColor { get; set; }
         public Color BorderHighlightColor { get; set; }
         public Color TextColor { get; set; }
@@ -18,7 +17,7 @@ namespace VillageGame.App.Gui
 
         public GuiStyle(Font font,
                         Color bodyColor,
-                        Color bodyHighlight,
+                        Color bodyHighlightColor,
                         Color borderColor,
                         Color borderHighlightColor,
                         Color textColor,
@@ -27,7 +26,7 @@ namespace VillageGame.App.Gui
         {
             Font = font;
             BodyColor = bodyColor;
-            BodyHighlight = bodyHighlight;
+            BodyHighlightColor = bodyHighlightColor;
             BorderColor = borderColor;
             BorderHighlightColor = borderHighlightColor;
             TextColor = textColor;

@@ -3,7 +3,7 @@ using SFML.System;
 using SFML.Window;
 using System.Collections.Generic;
 using System.Linq;
-using VillageGame.App.Gui;
+using VillageGame.App.GUI;
 using VillageGame.App.Level;
 using VillageGame.App.Tiles;
 
@@ -14,8 +14,8 @@ namespace VillageGame.App.States
         private View _gameView = new View();
         private View _guiView = new View();
         private Map _map = new Map();
-        private GuiElement _gui;
-        private GuiElement _gui2;
+        private Gui _gui;
+        private Gui _gui2;
         private Vector2i _mousePosition = Mouse.GetPosition();
         private Vector2i _selectedTile = new Vector2i(-1, -1);
         private float _zoomLevel = 0.5f;
@@ -273,8 +273,8 @@ namespace VillageGame.App.States
                 ""
             };
 
-            _gui = new GuiElement(entries, style, GuiElement.Direction.Vertical, new Vector2f(300, 30));
-            _gui2 = new GuiElement(entries2, style, GuiElement.Direction.Horizontal, new Vector2f(300, 30));
+            _gui = new Gui(entries, style, Gui.Direction.Vertical, new Vector2f(300, 30));
+            _gui2 = new Gui(entries2, style, Gui.Direction.Horizontal, new Vector2f(300, 30));
             _gui.Position = new Vector2f(0, App.Window.Size.Y - 2 * _gui.SizeOfEntry.Y);
             _gui2.Position = new Vector2f(0, App.Window.Size.Y - _gui.SizeOfEntry.Y);
             _gui2.SetSizeOfEntires(new Vector2f(App.Window.Size.X / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));

@@ -3,9 +3,9 @@ using SFML.System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VillageGame.App.Gui
+namespace VillageGame.App.GUI
 {
-    class GuiElement : Transformable, Drawable
+    class Gui : Transformable, Drawable
     {
         public enum Direction { Horizontal, Vertical }
 
@@ -16,7 +16,7 @@ namespace VillageGame.App.Gui
         public Vector2f SizeOfEntry { get; private set; }
         public int NumberOfEntries => _entries.Count;
 
-        public GuiElement(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size)
+        public Gui(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size)
         {
             _guiStyle = style;
             _direction = direction;
@@ -58,7 +58,7 @@ namespace VillageGame.App.Gui
 
         public void Highlight(GuiEntry entry)
         {
-            entry.Shape.FillColor = _guiStyle.BodyHighlighColor;
+            entry.Shape.FillColor = _guiStyle.BodyHighlightColor;
             entry.Shape.OutlineColor = _guiStyle.BorderHighlightColor;
             entry.EntryText.FillColor = _guiStyle.TextHighlightColor;
         }
