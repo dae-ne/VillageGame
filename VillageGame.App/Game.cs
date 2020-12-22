@@ -90,8 +90,8 @@ namespace VillageGame.App
         private void SetStyles()
         {
             _styles.Add("button", new GuiStyle(_fonts["main"], new Color(0xc6, 0xc6, 0xc6),
-                new Color(0x00, 0x00, 0xff), new Color(0x00, 0x00, 0x00), new Color(0x61, 0x61, 0x61),
-                new Color(0xff, 0xff, 0xff), new Color(0x94, 0x94, 0x94), 2.0f));
+                new Color(Color.White), new Color(Color.Black), new Color(Color.Yellow),
+                new Color(Color.White), new Color(Color.Black), 2.0f));
         }
     }
 }

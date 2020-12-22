@@ -12,6 +12,11 @@ namespace VillageGame.App.Level
         public int Money { get; private set; } = 2000;
         public int Counter { get; private set; } = 0;
 
+        public bool IsCottageBuilt => _isCottageBuilt;
+        public bool IsSawmillBuilt => _isSawmillBuilt;
+        public bool IsQuarryBuilt => _isQuarryBuilt;
+        public bool IsGoldMineBuilt => _isGoldMineBuilt;
+
         public bool BuildGoldMine()
         {
             if (!_isQuarryBuilt && !_isSawmillBuilt)

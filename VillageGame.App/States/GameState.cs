@@ -14,12 +14,12 @@ namespace VillageGame.App.States
         private View _gameView = new View();
         private View _guiView = new View();
         private Map _map = new Map();
-        private Gui _gui;
-        private Gui _gui2;
+        private Gui _guiBuildings;
+        private Gui _guiStats;
         private Vector2i _mousePosition = Mouse.GetPosition();
         private Vector2i _selectedTile = new Vector2i(-1, -1);
         private float _zoomLevel = 0.5f;
-        private GuiEntry _selectedGuiEntry = null;
+        private GuiElement _selectedGuiEntry = null;
         private readonly TextureManager _textureManager;
         private Village _village = new Village();
         private VillageCareTaker _careTaker = new VillageCareTaker();
@@ -62,23 +62,23 @@ namespace VillageGame.App.States
             App.Window.SetView(_gameView);
             App.Window.Draw(_map);
             App.Window.SetView(_guiView);
-            App.Window.Draw(_gui);
-            App.Window.Draw(_gui2);
+            App.Window.Draw(_guiBuildings);
+            App.Window.Draw(_guiStats);
             App.Window.Display();
         }
 
         public void Update()
         {
-            _gui.Update();
-            _gui2.Update();
-            _gui.UnHighlightAll();
-
-            _gui2.SetTextOfEntry(0, $"Pijōndze: {_village.Money}");
-            _gui2.SetTextOfEntry(1, $"Czas: {(int)_clock.ElapsedTime.AsSeconds()} s");
+            _guiBuildings.Update();
+            _guiStats.Update();
+            _guiBuildings.UnHighlightAll();
+            _guiStats.SetTextOfEntry(0, $"Pijōndze: {_village.Money}");
+            _guiStats.SetTextOfEntry(1, $"Czas: {(int)_clock.ElapsedTime.AsSeconds()} s");
+            EnableBuildings();
 
             if (_selectedGuiEntry != null)
             {
-                _gui.Highlight(_selectedGuiEntry);
+                _guiBuildings.Highlight(_selectedGuiEntry);
             }
 
             foreach (var tile in _map.Tiles)
@@ -113,13 +113,12 @@ namespace VillageGame.App.States
                 if (e.Button == Mouse.Button.Left)
                 {
                     var mousePosition = new Vector2f(e.X, e.Y);
-                    var entry = _gui.GetSelectedEntry(mousePosition);
 
                     if (_selectedTile.X >= 0 || _selectedTile.Y >= 0)
                     {
-                        if (entry != null)
+                        if (_selectedGuiEntry != null)
                         {
-                            var indexOfEntry = _gui.GetIndexOfEntry(entry);
+                            var indexOfEntry = _guiBuildings.GetIndexOfEntry(_selectedGuiEntry);
                             var indexOfTile = _selectedTile.X + _map.Width * _selectedTile.Y;
                             var momento = _village.SaveStateToMomento();
 
@@ -166,14 +165,12 @@ namespace VillageGame.App.States
                                     break;
                             }
 
-                            _selectedTile.X = -1;
-                            _selectedTile.Y = -1;
+                            UnselectTile();
                         }
                     }
-                    if (entry == null)
+                    if (_selectedGuiEntry == null)
                     {
-                        _selectedTile.X = -1;
-                        _selectedTile.Y = -1;
+                        UnselectTile();
 
                         foreach (var tile in _map.Tiles)
                         {
@@ -183,8 +180,7 @@ namespace VillageGame.App.States
 
                             if (x < 0 || y < 0)
                             {
-                                _selectedTile.X = -1;
-                                _selectedTile.Y = -1;
+                                UnselectTile();
                             }
                             else
                             {
@@ -195,15 +191,13 @@ namespace VillageGame.App.States
 
                                 if (_map.Tiles.ElementAt(indexOfTile).HasObject)
                                 {
-                                    _selectedTile.X = -1;
-                                    _selectedTile.Y = -1;
+                                    UnselectTile();
                                 }
                             }
 
                             if (_selectedTile.X >= _map.Width || _selectedTile.Y >= _map.Height)
                             {
-                                _selectedTile.X = -1;
-                                _selectedTile.Y = -1;
+                                UnselectTile();
                             }
                         }
                     }
@@ -215,9 +209,9 @@ namespace VillageGame.App.States
                 _selectedGuiEntry = null;
                 var isOverGui = false;
                 var mousePosition = new Vector2f(e.X, e.Y);
-                var entry = _gui.GetSelectedEntry(mousePosition);
+                var entry = _guiBuildings.GetSelectedEntry(mousePosition);
 
-                if (entry != null)
+                if (entry != null && entry.IsEnabled)
                 {
                     isOverGui = true;
                     _selectedGuiEntry = entry;
@@ -252,9 +246,9 @@ namespace VillageGame.App.States
                 _gameView.Size = new Vector2f(e.Width, e.Height);
                 _guiView.Reset(new FloatRect(0, 0, e.Width, e.Height));
                 _gameView.Zoom(_zoomLevel);
-                _gui.Position = new Vector2f(0, e.Height - 2 * _gui.SizeOfEntry.Y);
-                _gui2.Position = new Vector2f(0, e.Height - _gui.SizeOfEntry.Y);
-                _gui2.SetSizeOfEntires(new Vector2f(e.Width / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));
+                _guiBuildings.Position = new Vector2f(0, e.Height - 2 * _guiBuildings.SizeOfEntry.Y);
+                _guiStats.Position = new Vector2f(0, e.Height - _guiBuildings.SizeOfEntry.Y);
+                _guiStats.SetSizeOfEntires(new Vector2f(e.Width / _guiStats.NumberOfEntries, _guiStats.SizeOfEntry.Y));
             };
         }
 
@@ -273,11 +267,39 @@ namespace VillageGame.App.States
                 ""
             };
 
-            _gui = new Gui(entries, style, Gui.Direction.Vertical, new Vector2f(300, 30));
-            _gui2 = new Gui(entries2, style, Gui.Direction.Horizontal, new Vector2f(300, 30));
-            _gui.Position = new Vector2f(0, App.Window.Size.Y - 2 * _gui.SizeOfEntry.Y);
-            _gui2.Position = new Vector2f(0, App.Window.Size.Y - _gui.SizeOfEntry.Y);
-            _gui2.SetSizeOfEntires(new Vector2f(App.Window.Size.X / _gui2.NumberOfEntries, _gui2.SizeOfEntry.Y));
+            _guiBuildings = new Gui(entries, style, Gui.Direction.Vertical, new Vector2f(300, 30));
+            _guiStats = new Gui(entries2, style, Gui.Direction.Horizontal, new Vector2f(300, 30), false);
+            _guiBuildings.Position = new Vector2f(0, App.Window.Size.Y - 2 * _guiBuildings.SizeOfEntry.Y);
+            _guiStats.Position = new Vector2f(0, App.Window.Size.Y - _guiBuildings.SizeOfEntry.Y);
+            _guiStats.SetSizeOfEntires(new Vector2f(App.Window.Size.X / _guiStats.NumberOfEntries, _guiStats.SizeOfEntry.Y));
+
+            _guiBuildings.SetEntryAsDisabled(1);
+            _guiBuildings.SetEntryAsDisabled(3);
+            _guiBuildings.SetEntryAsDisabled(4);
+        }
+
+        public void UnselectTile()
+        {
+            _selectedTile.X = -1;
+            _selectedTile.Y = -1;
+        }
+
+        private void EnableBuildings()
+        {
+            if (_village.IsCottageBuilt)
+            {
+                _guiBuildings.SetEntryAsEnabled(1);
+            }
+
+            if (_village.IsSawmillBuilt && _village.IsQuarryBuilt)
+            {
+                _guiBuildings.SetEntryAsEnabled(3);
+            }
+
+            if (_village.IsGoldMineBuilt)
+            {
+                _guiBuildings.SetEntryAsEnabled(4);
+            }
         }
     }
 }

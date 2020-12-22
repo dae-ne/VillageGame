@@ -3,15 +3,16 @@ using SFML.System;
 
 namespace VillageGame.App.GUI
 {
-    class GuiEntry : Drawable
+    abstract class GuiElement : Drawable
     {
-        private readonly RectangleShape _shape;
-        private readonly Text _text;
+        protected readonly RectangleShape _shape;
+        protected readonly Text _text;
 
         public RectangleShape Shape => _shape;
         public Text EntryText => _text;
+        public virtual bool IsEnabled { get; set; } = true;
 
-        public GuiEntry(RectangleShape shape, Text text)
+        protected GuiElement(RectangleShape shape, Text text)
         {
             _shape = shape;
             _text = text;
@@ -25,12 +26,8 @@ namespace VillageGame.App.GUI
 
         public bool Contains(Vector2f mousePosition)
         {
-            IntRect rect = new IntRect((int)_shape.Position.X,
-                                       (int)_shape.Position.Y,
-                                       (int)_shape.GetGlobalBounds().Width,
-                                       (int)_shape.GetGlobalBounds().Height);
-
-            return rect.Contains((int)mousePosition.X, (int)mousePosition.Y);
+            IntRect rect = GetRectOfShapePosition();
+            return ContainsCursor(rect, mousePosition);
         }
 
         public void SetPosition(Vector2f position)
@@ -38,5 +35,8 @@ namespace VillageGame.App.GUI
             _shape.Position = position;
             _text.Position = position;
         }
+
+        protected abstract IntRect GetRectOfShapePosition();
+        protected abstract bool ContainsCursor(IntRect rect, Vector2f mousePosition);
     }
 }

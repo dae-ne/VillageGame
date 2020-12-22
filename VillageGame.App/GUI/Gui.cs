@@ -9,19 +9,19 @@ namespace VillageGame.App.GUI
     {
         public enum Direction { Horizontal, Vertical }
 
-        private readonly List<GuiEntry> _entries = new List<GuiEntry>();
+        private readonly List<GuiElement> _entries = new List<GuiElement>();
         private readonly GuiStyle _guiStyle;
         private readonly Direction _direction;
 
         public Vector2f SizeOfEntry { get; private set; }
         public int NumberOfEntries => _entries.Count;
 
-        public Gui(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size)
+        public Gui(IEnumerable<string> entries, GuiStyle style, Direction direction, Vector2f size, bool enabled = true)
         {
             _guiStyle = style;
             _direction = direction;
             SizeOfEntry = size;
-            SetEntries(entries);
+            SetEntries(entries, enabled);
             SetPositionOfEntries();
         }
 
@@ -33,12 +33,12 @@ namespace VillageGame.App.GUI
             }
         }
 
-        public int GetIndexOfEntry(GuiEntry entry)
+        public int GetIndexOfEntry(GuiElement entry)
         {
             return _entries.IndexOf(entry);
         }
 
-        public GuiEntry GetSelectedEntry(Vector2f mousePosition)
+        public GuiElement GetSelectedEntry(Vector2f mousePosition)
         {
             foreach (var entry in _entries)
             {
@@ -51,12 +51,27 @@ namespace VillageGame.App.GUI
             return null;
         }
 
+        public void SetEntryAsEnabled(int index)
+        {
+            _entries[index].IsEnabled = true;
+        }
+
+        public void SetEntryAsDisabled(int index)
+        {
+            _entries[index].IsEnabled = false;
+        }
+
+        public bool IsEntryEnabled(int index)
+        {
+            return _entries[index].IsEnabled;
+        }
+
         public void SetTextOfEntry(int index, string text)
         {
             _entries.ElementAt(index).EntryText.DisplayedString = text;
         }
 
-        public void Highlight(GuiEntry entry)
+        public void Highlight(GuiElement entry)
         {
             entry.Shape.FillColor = _guiStyle.BodyHighlightColor;
             entry.Shape.OutlineColor = _guiStyle.BorderHighlightColor;
@@ -87,7 +102,6 @@ namespace VillageGame.App.GUI
         public void Update()
         {
             SetPositionOfEntries();
-            //UnHighlightAll();
         }
 
         private RectangleShape SetShape()
@@ -100,7 +114,7 @@ namespace VillageGame.App.GUI
             return rectangle;
         }
 
-        private void SetEntries(IEnumerable<string> entries)
+        private void SetEntries(IEnumerable<string> entries, bool enabled)
         {
             foreach (var entry in entries)
             {
@@ -108,7 +122,15 @@ namespace VillageGame.App.GUI
                 Text text = new Text(entry, _guiStyle.Font);
                 text.FillColor = _guiStyle.TextColor;
                 text.CharacterSize = (uint)(SizeOfEntry.Y - _guiStyle.BorderThickness);
-                _entries.Add(new GuiEntry(shape, text));
+
+                if (enabled)
+                {
+                    _entries.Add(new GuiButton(shape, text));
+                }
+                else
+                { 
+                    _entries.Add(new GuiStaticElement(shape, text));
+                }
             }
         }
 
